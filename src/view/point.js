@@ -6,7 +6,6 @@ export const createPointTemplate = (data) => {
   const favoriteBtn = isFavorite ? 'event__favorite-btn event__favorite-btn--active' : 'event__favorite-btn';
 
 
-
   return  `<li class="trip-events__item">
   <div class="event">
     <time class="event__date" datetime=${adaptFullDate(dateStart)}>${adaptDate(dateStart)}</time>
@@ -44,5 +43,5 @@ export const createPointTemplate = (data) => {
     </button>
   </div>
 </li>`;
-}
- ;
+};
+

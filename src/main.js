@@ -22,7 +22,7 @@ const siteFilterElement = siteTripMainElement.querySelector('.trip-controls__fil
 const siteEventsElement = document.querySelector('.trip-events');
 
 
-render(siteTripMainElement, createRouteTemplate(), 'afterbegin');
+render(siteTripMainElement, createRouteTemplate(tripPointsArray), 'afterbegin');
 render(siteMenuElement, createMenuTemplate(), 'beforeend');
 render(siteFilterElement, createFilterTemplate(), 'beforeend');
 render(siteEventsElement, createSortTemplate(), 'beforeend');

@@ -1,7 +1,7 @@
 import {utils} from '../utils/utils';
 export const createEditPointTemplate = (data) =>{
   const {date,  destinations, pointType, types, price,  options, destinationInfo} = data;
-  const {dateStart, dateEnd, duration} = date;
+  const {dateStart, dateEnd} = date;
   const { adaptFullDate} = utils;
   const createPhotos = destinationInfo.photos.map((photo) => {
     return ` <img class="event__photo" src="${photo}" alt="Event photo">`;
