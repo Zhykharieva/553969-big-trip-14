@@ -1,21 +1,37 @@
-export const createFilterTemplate = () =>
-  `
-<form class="trip-filters" action="#" method="get">
-<div class="trip-filters__filter">
-  <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
-  <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
-</div>
+import {utils} from '../utils/utils';
+const {createElement} = utils;
+export const createFilterTemplate = (data) => {
+  return  data.map((type) => {
+    return `<div class="trip-filters__filter">
+      <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}">
+      <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
+    </div>`;
+  }).join('');
+};
+const createFilterForm = (filtersTypes) => {
+  const filters = createFilterTemplate(filtersTypes);
+  return `<form class="trip-filters" action="#" method="get">
+              <button class="visually-hidden" type="submit">Accept filter</button>
+              ${filters}
+          </form>`;
+};
+export default class Filter {
+  constructor(data) {
+    this._element = null;
+    this._array = data;
+  }
+  getTemplate () {
+    return createFilterForm(this._array);
+  }
 
-<div class="trip-filters__filter">
-  <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
-  <label class="trip-filters__filter-label" for="filter-future">Future</label>
-</div>
+  getElement () {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
 
-<div class="trip-filters__filter">
-  <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past">
-  <label class="trip-filters__filter-label" for="filter-past">Past</label>
-</div>
-
-<button class="visually-hidden" type="submit">Accept filter</button>
-</form>
-`;
+  clearElement() {
+    this._element = null;
+  }
+}
