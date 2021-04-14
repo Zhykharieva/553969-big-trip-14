@@ -1,11 +1,9 @@
 import {utils} from '../utils/utils';
-export const createPointTemplate = (data) => {
+const {adaptDate, adaptHours, adaptFullDate, createElement} = utils;
+const createPointTemplate = (data) => {
   const {date, destination, pointType, price,  options, isFavorite} = data;
   const {dateStart, dateEnd, duration} = date;
-  const {adaptDate, adaptHours, adaptFullDate} = utils;
   const favoriteBtn = isFavorite ? 'event__favorite-btn event__favorite-btn--active' : 'event__favorite-btn';
-
-
   return  `<li class="trip-events__item">
   <div class="event">
     <time class="event__date" datetime=${adaptFullDate(dateStart)}>${adaptDate(dateStart)}</time>
@@ -44,4 +42,23 @@ export const createPointTemplate = (data) => {
   </div>
 </li>`;
 };
+export default class TripPoint {
+  constructor(data) {
+    this._element = null;
+    this._array = data;
+  }
+  getTemplate () {
+    return createPointTemplate(this._array);
+  }
 
+  getElement () {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  clearElement() {
+    this._element = null;
+  }
+}

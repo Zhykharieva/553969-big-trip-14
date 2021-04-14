@@ -1,17 +1,16 @@
 import {utils} from '../utils/utils';
-export const createEditPointTemplate = (data) =>{
+const { adaptFullDate, createElement} = utils;
+const createEditPointTemplate = (data) =>{
   const {date,  destinations, pointType, types, price,  options, destinationInfo} = data;
   const {dateStart, dateEnd} = date;
-  const { adaptFullDate} = utils;
   const createPhotos = destinationInfo.photos.map((photo) => {
-    return ` <img class="event__photo" src="${photo}" alt="Event photo">`;
+    return `<img class="event__photo" src="${photo}" alt="Event photo">`;
   }).join('');
   const createOffersTypeTemplate =  types.map((type) => {
     return `<div class="event__type-item">
 <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
 <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
-</div>
-`;
+</div>`;
   }).join('');
   const createDestinationsOptionsTemplate = destinations.slice().map((destination) => {
     return `<option value="${destination}"></option>`;
@@ -19,8 +18,7 @@ export const createEditPointTemplate = (data) =>{
 
   const adaptedOffers = Array.from(new Set(options));
   const createOffersTemplate = adaptedOffers.map((offer) => {
-    return `
-                <div class="event__offer-selector">
+    return `<div class="event__offer-selector">
                   <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.type}-1" type="checkbox" name="event-offer-${offer.type}">
                   <label class="event__offer-label" for="event-offer-${offer.type}-1">
                     <span class="event__offer-title">${offer.text}</span>
@@ -32,8 +30,7 @@ export const createEditPointTemplate = (data) =>{
   }).join('');
 
 
-  return `
-  <li class="trip-events__item">
+  return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -93,6 +90,25 @@ export const createEditPointTemplate = (data) =>{
       </section>
     </section>
   </form>
-  </li>
-  `;
+  </li>`;
 };
+export default class EditForm {
+  constructor(data) {
+    this._element = null;
+    this._array = data;
+  }
+  getTemplate () {
+    return createEditPointTemplate(this._array);
+  }
+
+  getElement () {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  clearElement() {
+    this._element = null;
+  }
+}

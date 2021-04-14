@@ -28,6 +28,25 @@ const adaptHours = (date) => {
 const adaptFullDate = (date) => {
   return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 };
+const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+};
+const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
 export  const utils = {
   getRandomBetween,
   getRandomElement,
@@ -36,4 +55,7 @@ export  const utils = {
   adaptDate,
   adaptHours,
   adaptFullDate,
+  RenderPosition,
+  render,
+  createElement,
 };
