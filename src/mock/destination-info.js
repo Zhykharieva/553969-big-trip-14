@@ -1,6 +1,6 @@
-import {utils} from '../utils/utils';
+import {helpers} from '../utils/common';
 import {pointOptionsData} from '../data/point-options';
-const {getRandomBetween,  getRandomArray} = utils;
+const {getRandomBetween,  getRandomArray} = helpers;
 const { RANDOM_DESCRIPTION, MIN_OPTIONS_QUANTITY, MAX_OPTIONS_QUANTITY } = pointOptionsData;
 const getRandomDescriptionsArray = RANDOM_DESCRIPTION.split('.');
 

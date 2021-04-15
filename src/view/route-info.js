@@ -1,11 +1,17 @@
-import {utils} from '../utils/utils';
-const {adaptDate, createElement} = utils;
+import {dateAdaptors} from '../utils/date';
+import AbstractView from './abstract.js';
+const {adaptDate} = dateAdaptors;
+
 const createRouteTemplate = (data) => {
+
   const itinerary = data.map((point) => {
-    return point.destination;}).join(' &mdash; ');
+    return point.destination;
+  }).join(' &mdash; ');
+
   const totalPrice = data.reduce((total, amount) => {
     return total + amount.price;
   }, 0);
+
   return `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
           <h1 class="trip-info__title">${itinerary}</h1>
@@ -15,24 +21,16 @@ const createRouteTemplate = (data) => {
       Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
       </p>
   </section>`;
-} ;
-export default class RouteInfo {
+};
+
+export default class RouteInfo extends AbstractView{
   constructor(data) {
-    this._element = null;
+    super();
     this._array = data;
   }
-  getTemplate () {
+
+  getTemplate() {
     return createRouteTemplate(this._array);
   }
 
-  getElement () {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  clearElement() {
-    this._element = null;
-  }
 }
