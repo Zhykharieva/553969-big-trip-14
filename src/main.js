@@ -8,55 +8,67 @@ import TripPointView from './view/point';
 import NoEventView from './view/point';
 import {generatePoint} from './mock/point';
 import {pointOptionsData} from './data/point-options';
-import {utils} from './utils/utils';
-const {render, RenderPosition} = utils;
+import {utils} from './utils/render';
+import {isEscPressed} from './utils/events';
+
+const {render, RenderPosition, replace} = utils;
+
 const tripPointsArray = new Array(pointOptionsData.TRIP_POINTS_QUANTITY).fill('').map(generatePoint).sort((point1, point2) => {
   return point1.date.dateStart - point2.date.dateStart;
 });
-const routeInfoElem = new RouteInfoView(tripPointsArray).getElement();
+
+const routeInfoElem = new RouteInfoView(tripPointsArray);
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteMenuElement = siteTripMainElement.querySelector('.trip-controls__navigation');
-
 const siteFilterElement = siteTripMainElement.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
+
 render(siteTripMainElement, routeInfoElem, RenderPosition.AFTERBEGIN);
-render(siteMenuElement, new MenuView(pointOptionsData.MENU).getElement(), RenderPosition.BEFOREEND);
-render(siteFilterElement, new FiltersListView(pointOptionsData.FILTER_TYPES).getElement(), RenderPosition.BEFOREEND);
-render(siteEventsElement, new SortListView(pointOptionsData.SORT_TYPES).getElement(), RenderPosition.BEFOREEND);
-render(siteEventsElement, new EventListView().getElement(), RenderPosition.BEFOREEND);
+render(siteMenuElement, new MenuView(pointOptionsData.MENU), RenderPosition.BEFOREEND);
+render(siteFilterElement, new FiltersListView(pointOptionsData.FILTER_TYPES), RenderPosition.BEFOREEND);
+render(siteEventsElement, new SortListView(pointOptionsData.SORT_TYPES), RenderPosition.BEFOREEND);
+render(siteEventsElement, new EventListView(), RenderPosition.BEFOREEND);
+
 const eventsListElement = siteEventsElement.querySelector('.trip-events__list');
 
 const renderEventsList = (eventsListContainer, points) => {
-  if (points.length === 0) {
+  if (!points.length) {
     render(eventsListContainer, new NoEventView(), RenderPosition.BEFOREEND);
     return ;
   }
   points.forEach((point) => {
-    const currentPoint = new TripPointView(point).getElement();
-    const currentEditForm = new EditPointView(point).getElement();
+    const currentPoint = new TripPointView(point);
+    const currentEditForm = new EditPointView(point);
+
     render(eventsListElement, currentPoint, RenderPosition.AFTERBEGIN);
+
     const replacePointToEditForm = () => {
-      eventsListContainer.replaceChild( currentEditForm, currentPoint);
+      replace( currentEditForm, currentPoint);
     };
+
     const replaceFormToPoint = () => {
-      eventsListContainer.replaceChild(currentPoint, currentEditForm);
+      replace(currentPoint, currentEditForm);
     };
-    currentPoint.querySelector('.event__rollup-btn').addEventListener('click', () => {
+
+    currentPoint.setEditClickHandler(() => {
       replacePointToEditForm();
+      document.addEventListener('keydown', escKeyDownHandler);
     });
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
+
+    const escKeyDownHandler = (evt) => {
+      if (isEscPressed) {
         evt.preventDefault();
         replaceFormToPoint();
-        document.removeEventListener('keydown', onEscKeyDown);
+        document.removeEventListener('keydown', escKeyDownHandler);
       }
     };
-    currentEditForm.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
+
+    currentEditForm.setFormSubmitHandler(() => {
       replaceFormToPoint();
     });
-    document.addEventListener('keydown', onEscKeyDown);
+
   });
 };
+
 renderEventsList(eventsListElement, tripPointsArray);
 

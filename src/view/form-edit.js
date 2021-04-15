@@ -1,22 +1,40 @@
-import {utils} from '../utils/utils';
-const { adaptFullDate, createElement} = utils;
-const createEditPointTemplate = (data) =>{
-  const {date,  destinations, pointType, types, price,  options, destinationInfo} = data;
-  const {dateStart, dateEnd} = date;
+import {dateAdaptors} from '../utils/date';
+import AbstractView from './abstract.js';
+const { adaptFullDate} = dateAdaptors;
+const createEditPointTemplate = (data) => {
+  const {
+    date,
+    destinations,
+    pointType,
+    types,
+    price,
+    options,
+    destinationInfo,
+  } = data;
+
+  const {
+    dateStart,
+    dateEnd,
+  } = date;
+
   const createPhotos = destinationInfo.photos.map((photo) => {
     return `<img class="event__photo" src="${photo}" alt="Event photo">`;
   }).join('');
-  const createOffersTypeTemplate =  types.map((type) => {
+
+  const createOffersTypeTemplate = types.map((type) => {
     return `<div class="event__type-item">
-<input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
-<label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
-</div>`;
-  }).join('');
-  const createDestinationsOptionsTemplate = destinations.slice().map((destination) => {
-    return `<option value="${destination}"></option>`;
+    <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+    <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+    </div>`;
   }).join('');
 
+  const createDestinationsOptionsTemplate = destinations.slice()
+    .map((destination) => {
+      return `<option value="${destination}"></option>`;
+    }).join('');
+
   const adaptedOffers = Array.from(new Set(options));
+
   const createOffersTemplate = adaptedOffers.map((offer) => {
     return `<div class="event__offer-selector">
                   <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.type}-1" type="checkbox" name="event-offer-${offer.type}">
@@ -25,10 +43,9 @@ const createEditPointTemplate = (data) =>{
                     &plus;&euro;&nbsp;
                     <span class="event__offer-price">${offer.price}</span>
                   </label>
-                </div>`;
+            </div>`;
 
   }).join('');
-
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -92,23 +109,27 @@ const createEditPointTemplate = (data) =>{
   </form>
   </li>`;
 };
-export default class EditForm {
+
+export default class EditForm extends AbstractView {
+
   constructor(data) {
-    this._element = null;
+    super();
     this._array = data;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
-  getTemplate () {
+
+  getTemplate() {
     return createEditPointTemplate(this._array);
   }
 
-  getElement () {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  clearElement() {
-    this._element = null;
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
+
 }

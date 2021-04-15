@@ -1,7 +1,7 @@
 
-import {utils} from '../utils/utils';
+import {helpers} from '../utils/common';
 
-const {getRandomBetween, getRandomDate} = utils;
+const {getRandomBetween, getRandomDate} = helpers;
 const MILLISECONDS_IN_MINUTE = 60000;
 
 export const generateDate = () => {

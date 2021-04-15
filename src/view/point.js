@@ -1,10 +1,25 @@
-import {utils} from '../utils/utils';
-const {adaptDate, adaptHours, adaptFullDate, createElement} = utils;
+import {dateAdaptors} from '../utils/date';
+import AbstractView from './abstract.js';
+
+const {adaptDate, adaptHours, adaptFullDate} = dateAdaptors;
 const createPointTemplate = (data) => {
-  const {date, destination, pointType, price,  options, isFavorite} = data;
-  const {dateStart, dateEnd, duration} = date;
+  const {
+    date,
+    destination,
+    pointType,
+    price,
+    options,
+    isFavorite,
+  } = data;
+  const {
+    dateStart,
+    dateEnd,
+    duration,
+  } = date;
+
   const favoriteBtn = isFavorite ? 'event__favorite-btn event__favorite-btn--active' : 'event__favorite-btn';
-  return  `<li class="trip-events__item">
+
+  return `<li class="trip-events__item">
   <div class="event">
     <time class="event__date" datetime=${adaptFullDate(dateStart)}>${adaptDate(dateStart)}</time>
     <div class="event__type">
@@ -42,23 +57,27 @@ const createPointTemplate = (data) => {
   </div>
 </li>`;
 };
-export default class TripPoint {
-  constructor(data) {
-    this._element = null;
-    this._array = data;
-  }
-  getTemplate () {
-    return createPointTemplate(this._array);
+
+export default class TripPoint extends AbstractView {
+
+  constructor(point) {
+    super();
+    this._point = point;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
-  getElement () {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  getTemplate() {
+    return createPointTemplate(this._point);
   }
 
-  clearElement() {
-    this._element = null;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+
 }
