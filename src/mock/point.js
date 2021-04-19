@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import {helpers} from '../utils/common';
 import {pointOptionsData} from '../data/point-options';
 import {generateOptions} from './options';
@@ -10,6 +11,7 @@ export const generatePoint = () => {
 
 
   return {
+    id: nanoid(),
     types: TRANSPORT_TYPES,
     pointType: getRandomElement(TRANSPORT_TYPES),
     destinations: CITIES,

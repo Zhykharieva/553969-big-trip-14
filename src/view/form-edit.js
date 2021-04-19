@@ -114,17 +114,17 @@ export default class EditForm extends AbstractView {
 
   constructor(data) {
     super();
-    this._array = data;
+    this._point = data;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
 
   getTemplate() {
-    return createEditPointTemplate(this._array);
+    return createEditPointTemplate(this._point);
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._point);
   }
 
   setFormSubmitHandler(callback) {

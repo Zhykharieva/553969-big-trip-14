@@ -1,7 +1,9 @@
 import {helpers} from '../utils/common';
 import {pointOptionsData} from '../data/point-options';
+import {constants} from '../constants';
 const {getRandomBetween,  getRandomArray} = helpers;
-const { RANDOM_DESCRIPTION, MIN_OPTIONS_QUANTITY, MAX_OPTIONS_QUANTITY } = pointOptionsData;
+const { RANDOM_DESCRIPTION } = pointOptionsData;
+const {  MAX_OPTIONS_QUANTITY, MIN_OPTIONS_QUANTITY } = constants;
 const getRandomDescriptionsArray = RANDOM_DESCRIPTION.split('.');
 
 export const generateDestinationsInfo = () => {
