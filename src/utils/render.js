@@ -21,6 +21,8 @@ const render = (container, child, place) => {
     case RenderPosition.BEFOREEND:
       container.append(child);
       break;
+    default:
+      container.append(child);
   }
 };
 
