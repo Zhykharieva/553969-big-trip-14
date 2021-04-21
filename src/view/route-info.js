@@ -1,11 +1,7 @@
 import {dateAdaptors} from '../utils/date';
 import AbstractView from './abstract.js';
 const {adaptDate} = dateAdaptors;
-// const PointsNumber = {
-//   DEFAULT:,
-//   ZERO: 0,
 
-// }
 const createRouteTemplate = (data) => {
 
   const getItinerary = function(data){
