@@ -4,9 +4,22 @@ const {adaptDate} = dateAdaptors;
 
 const createRouteTemplate = (data) => {
 
-  const itinerary = data.map((point) => {
-    return point.destination;
-  }).join(' &mdash; ');
+  const getItinerary = function(data){
+    if (data.length === 0){
+      return '';
+    }
+    else if (data.length === 1){
+      return  data[0].destination;
+    }
+    else if (data.length === 2){
+      return  `${data[0].destination} &mdash; ${data[1].destination}`;
+    }
+    else if (data.length >= 3){
+      return  `${data[0].destination}  &mdash;   . . .   &mdash; ${data[data.length-1].destination}`;
+    }
+
+  };
+  const itinerary = getItinerary(data);
 
   const totalPrice = data.reduce((total, amount) => {
     return total + amount.price;
