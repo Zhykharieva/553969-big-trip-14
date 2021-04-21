@@ -1,7 +1,7 @@
 import AbstractView from './abstract.js';
-
-const createMenuTemplate = (data) => {
-  return data.map((type) => {
+export const MENU_TYPES =  ['Table', 'Stats'];
+const createMenuTemplate = () => {
+  return MENU_TYPES.map((type) => {
     return `<a class="trip-tabs__btn  trip-tabs__btn" href="#">${type}</a>`;
   }).join('');
 };
@@ -15,13 +15,8 @@ const createMenuNav = (menu) => {
 
 export default class SiteMenuView extends AbstractView {
 
-  constructor(data) {
-    super();
-    this._array = data;
-  }
-
   getTemplate() {
-    return createMenuNav(this._array);
+    return createMenuNav();
   }
 
 }

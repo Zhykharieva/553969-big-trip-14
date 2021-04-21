@@ -1,13 +1,12 @@
 import {helpers} from '../utils/common';
 import {pointOptionsData} from '../data/point-options';
-import {constants} from '../constants';
+import {Options} from '../constants';
 const {getRandomBetween,  getRandomArray} = helpers;
 const { RANDOM_DESCRIPTION } = pointOptionsData;
-const {  MAX_OPTIONS_QUANTITY, MIN_OPTIONS_QUANTITY } = constants;
 const getRandomDescriptionsArray = RANDOM_DESCRIPTION.split('.');
 
 export const generateDestinationsInfo = () => {
-  const photos =  new Array(getRandomBetween(MIN_OPTIONS_QUANTITY, MAX_OPTIONS_QUANTITY)).fill('').map(() => {
+  const photos =  new Array(getRandomBetween(Options.MIN, Options.MAX)).fill('').map(() => {
     return `http://picsum.photos/248/152?r=${getRandomBetween(0, 100)}`;
   });
   return {

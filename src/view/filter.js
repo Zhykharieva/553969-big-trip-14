@@ -1,7 +1,9 @@
 import AbstractView from './abstract.js';
 
-const createFilterTemplate = (data) => {
-  return data.map((type) => {
+const FILTER_TYPES =  ['everything', 'future', 'past'];
+
+const createFilterTemplate = () => {
+  return FILTER_TYPES.map((type) => {
     return `<div class="trip-filters__filter">
       <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}">
       <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
@@ -19,12 +21,7 @@ const createFilterForm = (filtersTypes) => {
 
 export default class Filter extends AbstractView {
 
-  constructor(filters) {
-    super();
-    this._filters = filters;
-  }
-
   getTemplate() {
-    return createFilterForm(this._filters);
+    return createFilterForm();
   }
 }

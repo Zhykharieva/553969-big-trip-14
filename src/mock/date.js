@@ -17,7 +17,7 @@ export const generateDate = () => {
     dateStart: startDate,
     dateEnd: dateFinish,
     duration: duration,
-
+    durationMiliseconds: milisecondsGap,
   };
 
 };
